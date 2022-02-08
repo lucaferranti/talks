@@ -63,6 +63,48 @@ md"""
 
 """
 
+# ╔═╡ 63d692f0-8cae-4a1f-9d9b-96e1ce7ee1c9
+md"""
+## Motivating example
+
+- observe the followig plot, there seems to be a small bump
+- maybe a cuspid around ``\frac{4}{3}``.
+"""
+
+# ╔═╡ a6b918ea-0fb0-4cfe-b14c-96f1775623c0
+let
+	l = @layout [a b; c]
+	f(x) = 1/80 * log(abs(3*(1 - x) + 1)) + x^2 + 1
+	p1 = plot(f, 1, 2)
+	p2 = plot(f, 1.2, 1.5)
+	p3 = plot(f, 1.3, 1.35)
+	plot(p1, p2, p3, layout=l, legend=false)
+end
+
+# ╔═╡ 133dc847-68d2-49ed-9e48-df79bf641e41
+md"""
+## The function
+
+```math
+f(x) = \frac{1}{80}\log(|3(1 - x) + 1|) + x^2 + 1
+```
+"""
+
+# ╔═╡ 55c89aec-3312-44f0-a232-c647ecf3ec72
+f(x) = 1/80 * log(abs(3*(1 - x) + 1)) + x^2 + 1
+
+# ╔═╡ ce05619f-2bb0-4d1e-bc79-7c15ae2f0211
+f(4/3)
+
+# ╔═╡ 6a072c8e-4437-4c79-bfd2-4d579e0c595d
+f(prevfloat(4/3))
+
+# ╔═╡ cd5bc6ef-cd08-4151-8856-d06fac100642
+f(nextfloat(4/3))
+
+# ╔═╡ 55ea5de2-4d66-4b48-a266-3905c9df1227
+f(4/3..4/3)
+
 # ╔═╡ 1276b17f-7fe9-40c7-8d81-25efd9b9e6ea
 md"""
 ## The devil in the details
@@ -157,7 +199,7 @@ In general, we can mince the interval
 """
 
 # ╔═╡ 0385122b-0b05-4110-9e3f-a28cce581f04
-@bind n_intervals Slider(1:20; show_value=true, default=1)
+@bind n_intervals Slider(1:20; show_value=true, default=10)
 
 # ╔═╡ f198359e-5f79-455a-97f6-987a2bc98158
 let
@@ -1810,6 +1852,14 @@ version = "0.9.1+5"
 # ╠═0bc12fe2-4d08-4840-b651-b58df23f0277
 # ╟─c9e05bd9-1d7b-41c0-99dc-29b1c1e20090
 # ╟─c7627ace-f697-4f5b-bb69-fedd7c45ffa8
+# ╟─63d692f0-8cae-4a1f-9d9b-96e1ce7ee1c9
+# ╟─a6b918ea-0fb0-4cfe-b14c-96f1775623c0
+# ╟─133dc847-68d2-49ed-9e48-df79bf641e41
+# ╠═55c89aec-3312-44f0-a232-c647ecf3ec72
+# ╠═ce05619f-2bb0-4d1e-bc79-7c15ae2f0211
+# ╠═6a072c8e-4437-4c79-bfd2-4d579e0c595d
+# ╠═cd5bc6ef-cd08-4151-8856-d06fac100642
+# ╠═55ea5de2-4d66-4b48-a266-3905c9df1227
 # ╟─1276b17f-7fe9-40c7-8d81-25efd9b9e6ea
 # ╠═1aebc980-53a2-41c4-89d1-7cb0cdc6df62
 # ╠═9379f519-bf6b-425f-a386-6a70e2e1ea68
@@ -1825,7 +1875,7 @@ version = "0.9.1+5"
 # ╟─6c0c3973-1d53-43d5-b1e0-fc8c7b27a5cc
 # ╠═250da12f-4433-4f9b-b008-34e7dd662453
 # ╟─98799b6e-aa5b-4b37-86db-ebebd9ba67f4
-# ╠═0385122b-0b05-4110-9e3f-a28cce581f04
+# ╟─0385122b-0b05-4110-9e3f-a28cce581f04
 # ╟─f198359e-5f79-455a-97f6-987a2bc98158
 # ╟─888650dd-9a74-4c86-bd65-2dbe7a94100e
 # ╟─c3a5fd72-9a9d-45f3-aaf3-bd61637d286c
