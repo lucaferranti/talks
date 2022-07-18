@@ -74,11 +74,11 @@ let
 	fxx = f.(xx)
 	idx = [1:n÷4, n÷4+1:2n÷4, 2n÷4+1:3n÷4, 3n÷4+1:n]
 	colors = ["#CB3C33", "#389826", "#9558B2", "#4063D8"]
-	fig = plot(f, inf(X), sup(X), lw=2, c="black", legend=false)
+	fig = plot(; legend=false)
 	for i in 1:4
-		plot!(fig, IntervalBox.(xx[idx[i]], fxx[idx[i]]), c=colors[i])
+		plot!(fig, IntervalBox.(xx[idx[i]], fxx[idx[i]]), c=colors[i], α=1, lw=2)
 	end
-	fig
+	plot!(fig, f, inf(X), sup(X), lw=3, c="black")
 end
 
 # ╔═╡ 782d4639-07c8-4240-9fae-85aac52609f1
@@ -89,7 +89,7 @@ md"""
 # ╔═╡ 7bef86b7-da9b-45c2-b50e-abbfbc0da754
 md"""
 ```math
-f(x) = -\sum_{k=0}^5kx\sin\left(\frac{k(x-3)}{3}\right)
+f(x) = -\sum_{k=1}^5kx\sin\left(\frac{k(x-3)}{3}\right)
 ```
 """
 
@@ -100,7 +100,7 @@ f(x) = -sum(k*x*sin(k*(x-3)/3) for k in 1:5)
 X = -10..10
 
 # ╔═╡ 4f948d62-10d9-4341-9bb8-45b1ad27d796
-fNat = enclose(f, X, NaturalEnclosure()) # same of enclose(f, X)
+fNat = enclose(f, X) # same of enclose(f, X, NaturalEnclosure())
 
 # ╔═╡ 6119a845-6b3a-406b-b216-cd3c9356593e
 fBB = enclose(f, X, BranchAndBoundEnclosure())
@@ -109,26 +109,12 @@ fBB = enclose(f, X, BranchAndBoundEnclosure())
 begin
 	plot(IntervalBox(X, fNat), label="natural enclosure")
 	plot!(IntervalBox(X, fBB), label="Branch and Bound")
-	plot!(f, -10, 10, lw=2, label="f")
-end
-
-# ╔═╡ 857aea24-2c58-4f89-b75d-02916da33a65
-md"""
-## Using external packages
-"""
-
-# ╔═╡ b0995487-0b3c-48b2-8785-ac90679784ad
-fMS = enclose(f, X, MooreSkelboeEnclosure())
-
-# ╔═╡ cda7234e-0850-41b2-97f9-16e6c64544a5
-begin
-	plot(IntervalBox(X, fMS))
-	plot!(f, inf(X), sup(X), lw=2, legend=false)
+	plot!(f, -10, 10, lw=2, c=:black, label="f")
 end
 
 # ╔═╡ 4cfc4c83-4340-4268-b261-4ad0776daea7
 md"""
-## Combining different methods
+## Direct Methods
 """
 
 # ╔═╡ ce8d8ccb-2988-44e7-a0ab-1880634b6d66
@@ -146,12 +132,34 @@ gMV = enclose(g, Xg, MeanValueEnclosure())
 # ╔═╡ 3d4f987a-90b2-4ed4-911e-2b4659763d83
 gBoth = enclose(g, Xg, [NaturalEnclosure(), MeanValueEnclosure()])
 
+# ╔═╡ c00ef06c-f5c0-4f71-ab57-34e8d0874443
+begin
+	plot(IntervalBox(Xg, gNE), α=1, fillstyle=:/, label="natural enclosure")
+	plot!(IntervalBox(Xg, gMV), α=1, fillstyle=:\, label="mean value form")
+	plot!(IntervalBox(Xg, gBoth), α=1, fillstyle=:+, label="both")
+	plot!(g, inf(Xg), sup(Xg), c=:black, lw=3, label="g(x)")
+end
+
+# ╔═╡ 857aea24-2c58-4f89-b75d-02916da33a65
+md"""
+## Iterative Methods
+"""
+
+# ╔═╡ b0995487-0b3c-48b2-8785-ac90679784ad
+fMS = enclose(g, Xg, MooreSkelboeEnclosure())
+
+# ╔═╡ cda7234e-0850-41b2-97f9-16e6c64544a5
+begin
+	plot(IntervalBox(Xg, fMS))
+	plot!(g, inf(Xg), sup(Xg), lw=2, c=:black, legend=false)
+end
+
 # ╔═╡ a3adebe8-5a8a-420e-9795-46b40742e0ce
 md"""
 ## Multivariate functions
 
 ```math
-h(x) = -x_1x_2 - 2x_2x_3 - x_1 - x_3
+h(x_1, x_2) = \sin(x_1) - cos(x_2) - \sin(x_1)\cos(x_1)
 ```
 """
 
@@ -172,6 +180,14 @@ let
 	surface!(x, y, [inf(hBB) for _ in x, _ in y], α=0.4)
 	surface!(x, y, f.(x', y), zlims=(-4, 4))
 end
+
+# ╔═╡ 82eee9be-05ef-4451-b9e6-cb30e4000389
+md"""
+## Thank you!
+
+- Package: <https://github.com/JuliaReach/RangeEnclosures.jl>
+- **Questions?**
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -710,10 +726,9 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
 
 [[deps.NaNMath]]
-deps = ["OpenLibm_jll"]
-git-tree-sha1 = "a7c3d1da1189a1c2fe843a3bfa04d18d20eb3211"
+git-tree-sha1 = "b086b7ea07f8e38cf122f5016af580881ac914fe"
 uuid = "77ba4419-2d1f-58cd-9bb1-8ffee604a2e3"
-version = "1.0.1"
+version = "0.3.7"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -1243,20 +1258,22 @@ version = "0.9.1+5"
 # ╠═4f948d62-10d9-4341-9bb8-45b1ad27d796
 # ╠═6119a845-6b3a-406b-b216-cd3c9356593e
 # ╟─91111c2a-6cd6-4f39-be12-9722ee6ec530
-# ╟─857aea24-2c58-4f89-b75d-02916da33a65
-# ╠═dd09c06b-87e0-473e-a622-bdbf6e63a332
-# ╠═b0995487-0b3c-48b2-8785-ac90679784ad
-# ╟─cda7234e-0850-41b2-97f9-16e6c64544a5
 # ╟─4cfc4c83-4340-4268-b261-4ad0776daea7
 # ╠═ce8d8ccb-2988-44e7-a0ab-1880634b6d66
 # ╠═b9d8c83a-b4ae-46bf-9b99-4ac8c1308ffe
 # ╠═7fddaa68-e5a1-42d6-886a-3d3b882a335a
 # ╠═3dd238d4-5c5e-48f3-801e-9dc88410d671
 # ╠═3d4f987a-90b2-4ed4-911e-2b4659763d83
+# ╟─c00ef06c-f5c0-4f71-ab57-34e8d0874443
+# ╟─857aea24-2c58-4f89-b75d-02916da33a65
+# ╠═dd09c06b-87e0-473e-a622-bdbf6e63a332
+# ╠═b0995487-0b3c-48b2-8785-ac90679784ad
+# ╟─cda7234e-0850-41b2-97f9-16e6c64544a5
 # ╟─a3adebe8-5a8a-420e-9795-46b40742e0ce
 # ╠═28c76582-874b-41de-bfb5-c7f20d628fef
 # ╠═3b1f8041-703a-4c1a-a207-517f8e541776
 # ╠═9d845ae9-875f-4058-a888-7156f762e6ba
 # ╟─0663eef3-eb48-4190-b8e8-68eff00487ca
+# ╟─82eee9be-05ef-4451-b9e6-cb30e4000389
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
