@@ -37,9 +37,9 @@ md"""
 
 - bring together everyone interested in Julia
 - networking, sharing, collaboration and most of all fun!
-- hopefully meetings will be regularly (once a month?)
-- talks to share your work / interests with the community are encouraged
-- check out the webpage <https://julia-users-helsinki.github.io> (still under construction, your input welcome!)
+- hopefully, meetings will be regularly (once a month?)
+- talks to share your work/interests with the community are encouraged
+- check out the webpage <https://julia-users-helsinki.github.io> (still under construction, your input is welcome!)
 """
 
 # ╔═╡ 5cd9d24b-80cd-4fb2-b9f9-c6ec23de688d
@@ -60,7 +60,7 @@ md"""
 ## Julia Overview
 
 - Modern fast, dynamic general-purpose programming language
-- Particularly attractive for researcher in data science, scientific computing, etc.
+- Particularly attractive for researchers in data science, scientific computing, etc.
 - Solves the two languages problem: *Reads like Python, runs like C*
 ![](https://julialang.org/assets/images/benchmarks.svg)
 
@@ -69,8 +69,9 @@ md"""
 ![](https://julialang.org/community/assets/orglogos.png)
 
 ##
-- Active community in slack, zulip, discord, discourse, forem, youtube, twitter, github. Check out <https://julialang.org/community/>
-- If you haven't Julia already, get it now at <https://julialang.org/downloads>
+
+- Active community in Slack, Zulip, Discord, Discourse, Forem, Youtube, Twitter, GitHub. Check out <https://julialang.org/community/>
+- If you haven't installed Julia already, get it now at <https://julialang.org/downloads>
 """
 
 # ╔═╡ 3af9246e-1e29-4d0b-aac8-169ffdea46a0
