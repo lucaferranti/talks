@@ -56,6 +56,13 @@ md"""
   ![](https://raw.githubusercontent.com/julia-users-helsinki/julia-users-helsinki.github.io/main/page/_assets/juh-logo.svg)
 """
 
+# ╔═╡ 11335b31-523e-4555-8b3f-9e1934c85562
+md"""
+## Simba in this presentation
+
+![](https://en.wikifur.com/w/images/c/cf/YoungSimbaSmilestlk.png)
+"""
+
 # ╔═╡ 311978a6-5120-4831-bea6-ec54a62ea6b6
 md"""
 # What is Julia?
@@ -320,6 +327,41 @@ fis = @mamfis function tipper(service, food)::tip
     service == excellent || food == delicious --> tip == generous
 end
 ```
+"""
+
+# ╔═╡ 9d28ac10-2e52-4065-b2e3-3d03dcfab187
+md"""
+## Modeling electrical circuit
+
+```julia
+R = 1.0
+C = 1.0
+V = 1.0
+@named resistor = Resistor(R = R)
+@named capacitor = Capacitor(C = C, v = 0.0)
+@named source = Voltage()
+@named constant = Constant(k = V)
+@named ground = Ground()
+
+rc_eqs = [connect(constant.output, source.V)
+          connect(source.p, resistor.p)
+          connect(resistor.n, capacitor.p)
+          connect(capacitor.n, source.n, ground.g)]
+
+@named rc_model = ODESystem(rc_eqs, t,
+    systems = [resistor, capacitor, constant, source, ground])
+sys = structural_simplify(rc_model)
+prob = ODEProblem(sys, Pair[], (0, 10.0))
+sol = solve(prob, Tsit5())
+plot(sol, idxs = [capacitor.v, resistor.i],
+    title = "RC Circuit Demonstration",
+    labels = ["Capacitor Voltage" "Resistor Current"])
+```
+"""
+
+# ╔═╡ d1c767f9-afec-431e-aa68-d4ab60ecb50a
+md"""
+![](https://docs.sciml.ai/ModelingToolkitStandardLibrary/stable/tutorials/plot.png)
 """
 
 # ╔═╡ e0100a3e-37a7-4003-812c-230cc0da08c9
@@ -2626,8 +2668,9 @@ version = "1.4.1+1"
 # ╔═╡ Cell order:
 # ╠═f5d0700c-8e89-11ee-1ef5-f55887e41b45
 # ╟─9a6d9033-64d5-449d-8b4e-3d2afcee7cdb
-# ╠═a9e1ecb8-7871-4b16-a692-4d941e07ba1e
+# ╟─a9e1ecb8-7871-4b16-a692-4d941e07ba1e
 # ╟─5fe6c969-1845-4fe0-afac-116e8b4cd1d7
+# ╟─11335b31-523e-4555-8b3f-9e1934c85562
 # ╟─311978a6-5120-4831-bea6-ec54a62ea6b6
 # ╟─e7a80969-0485-47bf-9705-bd7c04d0742f
 # ╟─db66cdba-5cc8-4ace-8a56-fd88e9afd4cc
@@ -2661,6 +2704,8 @@ version = "1.4.1+1"
 # ╠═3c0645f1-be1f-4ef6-9eb6-7bf1e4acd75b
 # ╠═1e382dbf-c7c1-4e39-b2a1-792a5fc76863
 # ╟─89c91167-9e19-4ac6-9743-6b2eb25556b7
+# ╟─9d28ac10-2e52-4065-b2e3-3d03dcfab187
+# ╟─d1c767f9-afec-431e-aa68-d4ab60ecb50a
 # ╟─e0100a3e-37a7-4003-812c-230cc0da08c9
 # ╟─dd8ebb67-0efd-4c27-b398-6e51c5d58cca
 # ╟─01f48090-8f0f-4384-837f-7a47f21ff73c
